@@ -1,0 +1,840 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vulnerabilityAssessments_Default_storageContainerPath": {
+            "type": "SecureString"
+        },
+        "servers_azurefundamentalsyash_name": {
+            "defaultValue": "azurefundamentalsyash",
+            "type": "String"
+        },
+        "storageAccounts_azurefundastorageyash_name": {
+            "defaultValue": "azurefundastorageyash",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Sql/servers",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[parameters('servers_azurefundamentalsyash_name')]",
+            "location": "canadacentral",
+            "kind": "v12.0",
+            "properties": {
+                "administratorLogin": "adminyash",
+                "version": "12.0",
+                "minimalTlsVersion": "1.2",
+                "publicNetworkAccess": "Enabled",
+                "administrators": {
+                    "administratorType": "ActiveDirectory",
+                    "principalType": "User",
+                    "login": "jyash812694_gmail.com#EXT#@jyash812694gmail.onmicrosoft.com",
+                    "sid": "590f7948-2e57-4a8c-a4de-26d879e0cadb",
+                    "tenantId": "9991671c-05c8-409e-8d16-c9bbd64a93ec",
+                    "azureADOnlyAuthentication": false
+                },
+                "restrictOutboundNetworkAccess": "Disabled",
+                "retentionDays": -1
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2026-04-01",
+            "name": "[parameters('storageAccounts_azurefundastorageyash_name')]",
+            "location": "eastus",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "dualStackEndpointPreference": {
+                    "publishIpv6Endpoint": false
+                },
+                "dnsEndpointType": "Standard",
+                "defaultToOAuthAuthentication": false,
+                "publicNetworkAccess": "Enabled",
+                "allowCrossTenantReplication": false,
+                "isSftpEnabled": false,
+                "minimumTlsVersion": "TLS1_2",
+                "allowBlobPublicAccess": false,
+                "allowSharedKeyAccess": true,
+                "isHnsEnabled": true,
+                "networkAcls": {
+                    "ipv6Rules": [],
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "requireInfrastructureEncryption": false,
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/administrators",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/ActiveDirectory')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "administratorType": "ActiveDirectory",
+                "login": "jyash812694_gmail.com#EXT#@jyash812694gmail.onmicrosoft.com",
+                "sid": "590f7948-2e57-4a8c-a4de-26d879e0cadb",
+                "tenantId": "9991671c-05c8-409e-8d16-c9bbd64a93ec"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advancedThreatProtectionSettings",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/CreateIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/DbParameterization')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/DefragmentIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/DropIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/ForceLastGoodPlan')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/auditingPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/Default')]",
+            "location": "Canada Central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "auditingState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/auditingSettings",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/azureADOnlyAuthentications",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "azureADOnlyAuthentication": false
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/connectionPolicies",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/default')]",
+            "location": "canadacentral",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "connectionType": "Default"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/azurefundamentaldb')]",
+            "location": "canadacentral",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "sku": {
+                "name": "GP_S_Gen5_1",
+                "tier": "GeneralPurpose",
+                "family": "Gen5",
+                "capacity": 1
+            },
+            "kind": "v12.0,user,vcore,serverless",
+            "properties": {
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "maxSizeBytes": 34359738368,
+                "catalogCollation": "SQL_Latin1_General_CP1_CI_AS",
+                "zoneRedundant": false,
+                "readScale": "Disabled",
+                "autoPauseDelay": 60,
+                "requestedBackupStorageRedundancy": "Local",
+                "minCapacity": 0.5,
+                "maintenanceConfigurationId": "/subscriptions/3aa0dd33-55ce-4afb-88d6-2f92be481192/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default",
+                "isLedgerOn": false,
+                "availabilityZone": "NoPreference"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advancedThreatProtectionSettings",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/master/Default')]",
+            "location": "Canada Central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "auditingState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingSettings",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "isAzureMonitorTargetEnabled": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/extendedAuditingSettings",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "isAzureMonitorTargetEnabled": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/geoBackupPolicies",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/ledgerDigestUploads",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/master/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled",
+                "disabledAlerts": [
+                    ""
+                ],
+                "emailAddresses": [
+                    ""
+                ],
+                "emailAccountAdmins": false,
+                "retentionDays": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/master/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/vulnerabilityAssessments",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "recurringScans": {
+                    "isEnabled": false,
+                    "emailSubscriptionAdmins": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/devOpsAuditingSettings",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/encryptionProtector",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "kind": "servicemanaged",
+            "properties": {
+                "serverKeyName": "ServiceManaged",
+                "serverKeyType": "ServiceManaged",
+                "autoRotationEnabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/extendedAuditingSettings",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/AllowAllWindowsAzureIps')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "startIpAddress": "0.0.0.0",
+                "endIpAddress": "0.0.0.0"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/ClientIp-2026-6-24_12-29-13')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "startIpAddress": "104.132.16.39",
+                "endIpAddress": "104.132.16.39"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/QueryEditorClientIPAddress_1782285361958')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "startIpAddress": "104.132.16.38",
+                "endIpAddress": "104.132.16.38"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/QueryEditorClientIPAddress_1784346025962')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "startIpAddress": "150.242.86.106",
+                "endIpAddress": "150.242.86.106"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/keys",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/ServiceManaged')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "kind": "servicemanaged",
+            "properties": {
+                "serverKeyType": "ServiceManaged"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/securityAlertPolicies",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled",
+                "disabledAlerts": [
+                    ""
+                ],
+                "emailAddresses": [
+                    ""
+                ],
+                "emailAccountAdmins": false,
+                "retentionDays": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/sqlVulnerabilityAssessments",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/vulnerabilityAssessments",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "recurringScans": {
+                    "isEnabled": false,
+                    "emailSubscriptionAdmins": true
+                },
+                "storageContainerPath": "[parameters('vulnerabilityAssessments_Default_storageContainerPath')]"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2026-04-01",
+            "name": "[concat(parameters('storageAccounts_azurefundastorageyash_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_azurefundastorageyash_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "staticWebsite": {
+                    "enabled": false
+                },
+                "containerDeleteRetentionPolicy": {
+                    "enabled": true,
+                    "days": 7
+                },
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "allowPermanentDelete": false,
+                    "enabled": true,
+                    "days": 7
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/fileServices",
+            "apiVersion": "2026-04-01",
+            "name": "[concat(parameters('storageAccounts_azurefundastorageyash_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_azurefundastorageyash_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "protocolSettings": {
+                    "smb": {
+                        "encryptionInTransit": {
+                            "required": true
+                        }
+                    }
+                },
+                "cors": {
+                    "corsRules": []
+                },
+                "shareDeleteRetentionPolicy": {
+                    "enabled": true,
+                    "days": 7
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/queueServices",
+            "apiVersion": "2026-04-01",
+            "name": "[concat(parameters('storageAccounts_azurefundastorageyash_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_azurefundastorageyash_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/tableServices",
+            "apiVersion": "2026-04-01",
+            "name": "[concat(parameters('storageAccounts_azurefundastorageyash_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_azurefundastorageyash_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advancedThreatProtectionSettings",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/azurefundamentaldb/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azurefundamentalsyash_name'), 'azurefundamentaldb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/azurefundamentaldb/CreateIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azurefundamentalsyash_name'), 'azurefundamentaldb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/azurefundamentaldb/DbParameterization')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azurefundamentalsyash_name'), 'azurefundamentaldb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/azurefundamentaldb/DefragmentIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azurefundamentalsyash_name'), 'azurefundamentaldb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/azurefundamentaldb/DropIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azurefundamentalsyash_name'), 'azurefundamentaldb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/azurefundamentaldb/ForceLastGoodPlan')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azurefundamentalsyash_name'), 'azurefundamentaldb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/azurefundamentaldb/Default')]",
+            "location": "Canada Central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azurefundamentalsyash_name'), 'azurefundamentaldb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "auditingState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingSettings",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/azurefundamentaldb/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azurefundamentalsyash_name'), 'azurefundamentaldb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "isAzureMonitorTargetEnabled": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/azurefundamentaldb/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azurefundamentalsyash_name'), 'azurefundamentaldb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "timeBasedImmutability": "Disabled",
+                "weeklyRetention": "PT0S",
+                "monthlyRetention": "PT0S",
+                "yearlyRetention": "PT0S",
+                "weekOfYear": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/azurefundamentaldb/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azurefundamentalsyash_name'), 'azurefundamentaldb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 7,
+                "diffBackupIntervalInHours": 12
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/extendedAuditingSettings",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/azurefundamentaldb/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azurefundamentalsyash_name'), 'azurefundamentaldb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "isAzureMonitorTargetEnabled": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/geoBackupPolicies",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/azurefundamentaldb/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azurefundamentalsyash_name'), 'azurefundamentaldb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/ledgerDigestUploads",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/azurefundamentaldb/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azurefundamentalsyash_name'), 'azurefundamentaldb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/azurefundamentaldb/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azurefundamentalsyash_name'), 'azurefundamentaldb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled",
+                "disabledAlerts": [
+                    ""
+                ],
+                "emailAddresses": [
+                    ""
+                ],
+                "emailAccountAdmins": false,
+                "retentionDays": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/azurefundamentaldb/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azurefundamentalsyash_name'), 'azurefundamentaldb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/vulnerabilityAssessments",
+            "apiVersion": "2025-02-01-preview",
+            "name": "[concat(parameters('servers_azurefundamentalsyash_name'), '/azurefundamentaldb/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_azurefundamentalsyash_name'), 'azurefundamentaldb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_azurefundamentalsyash_name'))]"
+            ],
+            "properties": {
+                "recurringScans": {
+                    "isEnabled": false,
+                    "emailSubscriptionAdmins": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2026-04-01",
+            "name": "[concat(parameters('storageAccounts_azurefundastorageyash_name'), '/default/rawdata')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_azurefundastorageyash_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_azurefundastorageyash_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
+            "apiVersion": "2026-04-01",
+            "name": "[concat(parameters('storageAccounts_azurefundastorageyash_name'), '/default/sales')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageAccounts_azurefundastorageyash_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_azurefundastorageyash_name'))]"
+            ],
+            "properties": {}
+        }
+    ]
+}
