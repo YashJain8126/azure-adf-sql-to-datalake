@@ -1,0 +1,15 @@
+{
+	"name": "sqlIngestionADFYash",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "39ca660b-ae22-4b98-8e9f-ecb505cc2ec9",
+		"tenantId": "9991671c-05c8-409e-8d16-c9bbd64a93ec"
+	}
+}
